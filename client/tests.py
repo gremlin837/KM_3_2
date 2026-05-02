@@ -17,7 +17,7 @@ from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
 from matplotlib.figure import Figure
 
 
-# АСИНХРОННЫЙ РАБОЧИЙ ПОТОК (ервер + оркестратор)
+# АСИНХРОННЫЙ РАБОЧИЙ ПОТОК (сервер + оркестратор)
 
 class CalculationWorker(QThread):
     finished = pyqtSignal(dict)
@@ -70,15 +70,15 @@ class CalculationWorker(QThread):
         except Exception as e:
             self.error.emit(str(e))
 
-# ============================================================================
+
 # ГЛАВНОЕ ОКНО (ТЕСТОВАЯ ВЕРСИЯ)
-# ============================================================================
+
 class MainWindow(QMainWindow):
     def __init__(self, username: str = "test_user", role: str = "operator"):
         super().__init__()
         self.username = username
         self.role = role
-        self.setWindowTitle(f"ТЭС: Оптимизация эффективности | 👤 {username} [{role.upper()}] (TEST MODE)")
+        self.setWindowTitle(f"ТЭС: Оптимизация эффективности | {username} [{role.upper()}] (TEST MODE)")
         self.resize(1000, 720)
         self._setup_ui()
         self._setup_signals()
@@ -99,7 +99,7 @@ class MainWindow(QMainWindow):
         self.tabs = QTabWidget()
         main_lay.addWidget(self.tabs)
 
-        # ==================== ВКЛАДКА 1: РАСЧЁТ ====================
+        #  ВКЛАДКА 1: РАСЧЁТ
         tab1 = QWidget()
         lay1 = QHBoxLayout(tab1)
 
@@ -125,7 +125,7 @@ class MainWindow(QMainWindow):
             ("Коэфф. недогрузки (β)", self.spin_beta), ("Коэфф. собственных нужд", self.spin_own_needs)]:
             inp_form.addRow(lbl, spin)
 
-        self.btn_calc = QPushButton("▶ Рассчитать эффективность")
+        self.btn_calc = QPushButton("Рассчитать эффективность")
         self.btn_calc.setStyleSheet("background-color: #2196F3; color: white; padding: 8px; font-weight: bold;")
         inp_form.addRow(self.btn_calc)
         lay1.addWidget(inp_box)
@@ -257,9 +257,9 @@ class MainWindow(QMainWindow):
         self.btn_vac.clicked.connect(self._run_vacuum_opt)
         self.btn_plot.clicked.connect(self._plot_selected_chart)
 
-    # ========================================================================
+    
     # ВАЛИДАЦИЯ
-    # ========================================================================
+    
     def _validate_inputs(self) -> bool:
         if self.spin_load.value() <= 0:
             QMessageBox.warning(self, "Ошибка", "Нагрузка должна быть > 0"); return False
