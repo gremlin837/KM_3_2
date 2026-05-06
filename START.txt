@@ -1,0 +1,4 @@
+uvicorn server.server:app --host 127.0.0.1 --port 8000 --reload
+uvicorn orchestrator.orchestrator:app --host 127.0.0.1 --port 8001 --reload
+main_client.py
+
